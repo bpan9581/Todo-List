@@ -36,7 +36,7 @@ const TableEntry = (props) => {
 
     return (
         <WRow className='table-entry'>
-            <WCol size="4">
+            <WCol size="3">
                 {
                     editingDescr || description === ''
                         ? <WInput
@@ -65,7 +65,7 @@ const TableEntry = (props) => {
                 }
             </WCol>
 
-            <WCol size="2">
+            <WCol size="3">
                 {
                     editingStatus ? <select
                         className='table-select' onBlur={handleStatusEdit}

@@ -234,15 +234,15 @@ const Homescreen = (props) => {
 			</WLMain>
 
 			{
-				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
+				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} showDelete = {showDelete} setShowDelete={setShowDelete} />)
 			}
 
 			{
-				showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
+				showCreate && (<CreateAccount fetchUser={props.fetchUser} showCreate = {showCreate} setShowCreate={setShowCreate} />)
 			}
 
 			{
-				showLogin && (<Login fetchUser={props.fetchUser} refetchTodos={refetch}setShowLogin={setShowLogin} />)
+				showLogin && (<Login fetchUser={props.fetchUser} showLogin = {showLogin} refetchTodos={refetch}setShowLogin={setShowLogin} />)
 			}
 
 		</WLayout>

@@ -9,7 +9,7 @@ const TableHeader = (props) => {
 
     return (
         <WRow className="table-header">
-            <WCol size="4">
+            <WCol size="3">
                 <WButton className='table-header-section' wType="texted" >Task</WButton>
             </WCol>
 
@@ -17,7 +17,7 @@ const TableHeader = (props) => {
                 <WButton className='table-header-section' wType="texted">Due Date</WButton>
             </WCol>
 
-            <WCol size="2">
+            <WCol size="3">
                 <WButton className='table-header-section' wType="texted" >Status</WButton>
             </WCol>
 
