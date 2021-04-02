@@ -21,8 +21,19 @@ const TableHeader = (props) => {
                 <WButton className='table-header-section' wType="texted" >Status</WButton>
             </WCol>
 
-            <WCol size="3">
+            <WCol size = "1">
+                <WButton className='table-header-section' wType = "texted">User</WButton>
+            </WCol>
+
+
+            <WCol size="2">
                 <div className="table-header-buttons">
+                    <WButton className="undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded" className={`${buttonStyle}`}>
+                            <i className="material-icons">undo</i>
+                    </WButton>
+                    <WButton className="undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded" className={`${buttonStyle}`}>
+                            <i className="material-icons">redo</i>
+                    </WButton>
                     <WButton onClick={props.disabled ? clickDisabled : props.addItem} wType="texted" className={`${buttonStyle}`}>
                         <i className="material-icons">add_box</i>
                     </WButton>
