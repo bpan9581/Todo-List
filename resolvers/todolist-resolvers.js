@@ -104,6 +104,7 @@ module.exports = {
 			const { field, value, _id } = args;
 			const objectId = new ObjectId(_id);
 			const updated = await Todolist.updateOne({_id: objectId}, {[field]: value});
+			console.log(value);
 			if(updated) return value;
 			else return "";
 		},

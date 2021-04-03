@@ -116,7 +116,7 @@ html, body {
     border-bottom: 1px solid;
     color: $text-color;
     transition: 0.1s ease-in-out;
-    height: 46px;
+    min-height: 46px;
 }
 
 .table-entry:hover {
@@ -194,5 +194,11 @@ html, body {
 }
 
 .table-entry-buttons-disabled {
+    color: var(--warm-black);
+}
+.red{
+    color: red;
+}
+.black{
     color: var(--warm-black);
 }

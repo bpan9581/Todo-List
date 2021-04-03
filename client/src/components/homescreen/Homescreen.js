@@ -79,7 +79,7 @@ const Homescreen = (props) => {
 			id: lastID,
 			description: 'No Description',
 			due_date: 'No Date',
-			assigned_to: props.user._id,
+			assigned_to: "Not Assigned",
 			completed: false
 		};
 		let opcode = 1;
@@ -129,7 +129,7 @@ const Homescreen = (props) => {
 	const createNewList = async () => {
 		const length = todolists.length
 		const id = length >= 1 ? todolists[length - 1].id + Math.floor((Math.random() * 100) + 1) : 1;
-		let list = {
+		const list = {
 			_id: '',
 			id: id,
 			name: 'Untitled',
@@ -137,7 +137,8 @@ const Homescreen = (props) => {
 			items: [],
 		}
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
-		setActiveList(list)
+		setActiveList(list);
+		console.log(list)
 	};
 
 	const deleteList = async (_id) => {

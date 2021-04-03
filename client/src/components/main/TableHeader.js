@@ -17,12 +17,12 @@ const TableHeader = (props) => {
                 <WButton className='table-header-section' wType="texted">Due Date</WButton>
             </WCol>
 
-            <WCol size="3">
+            <WCol size="2">
                 <WButton className='table-header-section' wType="texted" >Status</WButton>
             </WCol>
 
-            <WCol size = "1">
-                <WButton className='table-header-section' wType = "texted">User</WButton>
+            <WCol size = "2">
+                <WButton className='table-header-section' wType = "texted">Assigned To</WButton>
             </WCol>
 
 
