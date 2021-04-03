@@ -6,6 +6,7 @@ const MainContents = (props) => {
     return (
         <div className='table ' >
             <TableHeader
+                undo={props.undo} redo={props.redo}
                 disabled={!props.activeList._id} addItem={props.addItem}
                 setShowDelete={props.setShowDelete} setActiveList={props.setActiveList}
             />

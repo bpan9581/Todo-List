@@ -156,7 +156,13 @@ const Homescreen = (props) => {
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
 		setActiveList(todo);
+		props.tps.clearAllTransactions();
 	};
+
+	const clearActiveList = () => {
+		setActiveList({});
+		props.tps.clearAllTransactions();
+	}
 
 	
 	/*
@@ -180,6 +186,7 @@ const Homescreen = (props) => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowDelete(!showDelete)
+		props.tps.clearAllTransactions();
 	}
 
 	return (
@@ -208,7 +215,6 @@ const Homescreen = (props) => {
 							<SidebarContents
 								todolists={todolists} activeid={activeList.id} auth={auth}
 								handleSetActive={handleSetActive} createNewList={createNewList}
-								undo={tpsUndo} redo={tpsRedo}
 								updateListField={updateListField}
 							/>
 							:
@@ -224,7 +230,8 @@ const Homescreen = (props) => {
 									addItem={addItem} deleteItem={deleteItem}
 									editItem={editItem} reorderItem={reorderItem}
 									setShowDelete={setShowDelete}
-									activeList={activeList} setActiveList={setActiveList}
+									activeList={activeList} setActiveList={clearActiveList}
+									undo={tpsUndo} redo={tpsRedo}
 								/>
 							</div>
 						:
