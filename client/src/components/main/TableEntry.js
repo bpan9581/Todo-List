@@ -120,7 +120,7 @@ const TableEntry = (props) => {
                     <WButton className={last} onClick={props.index + 1 === props.last? clickDisabled: () => props.reorderItem(data._id, 1)} wType="texted">
                         <i className="material-icons">expand_more</i>
                     </WButton>
-                    <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data, props.index)} wType="texted">
                         <i className="material-icons">close</i>
                     </WButton>
                 </div>

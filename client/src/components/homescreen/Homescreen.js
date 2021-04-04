@@ -16,6 +16,7 @@ import { UpdateListField_Transaction,
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
 import WInput from 'wt-frontend/build/components/winput/WInput';
+import { set } from 'mongoose';
 
 
 const Homescreen = (props) => {
@@ -33,12 +34,20 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
+	const [MoveTop]					= useMutation(mutations.MOVE_TOP);
 
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
-	if(data) { todolists = data.getAllTodos; }
+	if(data) { 
+		todolists = data.getAllTodos; 
+		let newTodo = todolists.indexOf(activeList);
+		if(newTodo !== -1){
+			// todolists = await moveTop({ variables: { todolists: todolists, index: newTodo }, refetchQueries: [{ query: GET_DB_TODOS }] });
+		}
+	}
+	
 
 	const auth = props.user === null ? false : true;
 
@@ -46,10 +55,12 @@ const Homescreen = (props) => {
 		const { loading, error, data } = await refetch();
 		if (data) {
 			todolists = data.getAllTodos;
+	
 			if (activeList._id) {
 				let tempID = activeList._id;
 				let list = todolists.find(list => list._id === tempID);
 				setActiveList(list);
+
 			}
 		}
 	}
@@ -91,7 +102,7 @@ const Homescreen = (props) => {
 	};
 
 
-	const deleteItem = async (item) => {
+	const deleteItem = async (item, index) => {
 		let listID = activeList._id;
 		let itemID = item._id;
 		let opcode = 0;
@@ -103,7 +114,7 @@ const Homescreen = (props) => {
 			assigned_to: item.assigned_to,
 			completed: item.completed
 		}
-		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem);
+		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};
@@ -137,9 +148,11 @@ const Homescreen = (props) => {
 			items: [],
 		}
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
+		list._id = data.addTodolist;
 		setActiveList(list);
-		console.log(list)
+		refetch();
 	};
+
 
 	const deleteList = async (_id) => {
 		DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_TODOS }] });

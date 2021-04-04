@@ -30,8 +30,8 @@ export const LOGOUT = gql`
 `;
 
 export const ADD_ITEM = gql`
-	mutation AddItem($item: ItemInput!, $_id: String!) {
-		addItem(item: $item, _id: $_id)
+	mutation AddItem($item: ItemInput!, $_id: String!, $index: Int!) {
+		addItem(item: $item, _id: $_id, index: $index)
 	}
 `;
 
@@ -89,5 +89,11 @@ export const DELETE_TODOLIST = gql`
 export const UPDATE_TODOLIST_FIELD = gql`
 	mutation UpdateTodolistField($_id: String!, $field: String!, $value: String!) {
 		updateTodolistField(_id: $_id, field: $field, value: $value)
+	}
+`;
+
+export const MOVE_TOP = gql`
+	mutation MoveTop($todolist: TodoInput!) {
+		moveTop(todolist: $todolist) 
 	}
 `;
