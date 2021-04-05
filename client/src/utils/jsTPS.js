@@ -224,7 +224,7 @@ export class jsTPS {
         console.log('redo transactions:' + this.getRedoSize());
         console.log('undo transactions:' + this.getUndoSize());
 		console.log(' ')
-		return retVal;
+		return([retVal, this.hasTransactionToUndo(), this.hasTransactionToRedo()]);
     }
     
     /**
@@ -274,7 +274,7 @@ export class jsTPS {
         console.log('redo transactions:' + this.getRedoSize());
         console.log('undo transactions:' + this.getUndoSize());
         console.log(' ')
-		return(retVal);
+		return([retVal, this.hasTransactionToUndo(), this.hasTransactionToRedo()]);
     }
 
     /**

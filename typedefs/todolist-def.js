@@ -23,7 +23,7 @@ const typeDefs = gql `
 	}
 	extend type Mutation {
 		addItem(item: ItemInput!, _id: String!, index: Int!): String
-		moveTop(todolists: TodoInput!, index: Int!): String
+		moveTop(_id: String!): String
 		addTodolist(todolist: TodoInput!): String
 		deleteItem(itemId: String!, _id: String!): [Item]		
 		deleteTodolist(_id: String!): Boolean

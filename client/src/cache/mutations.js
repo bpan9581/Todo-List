@@ -106,7 +106,7 @@ export const UPDATE_TODOLIST_FIELD = gql`
 `;
 
 export const MOVE_TOP = gql`
-	mutation MoveTop($todolists: TodoInput!, $index: Int!) {
-		moveTop(todolists: $todolists, index: $index) 
+	mutation MoveTop($_id: String!) {
+		moveTop(_id: $_id) 
 	}
 `;

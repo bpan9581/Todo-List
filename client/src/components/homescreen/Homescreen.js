@@ -27,6 +27,8 @@ const Homescreen = (props) => {
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	const [hasUndo, setUndo] 				= useState(false);
+	const [hasRedo, setRedo]				= useState(false);
 	// const [hasUndo, setUndo] 				= useState(props.tps.hasTransactionToUndo);
 
 	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS);
@@ -36,7 +38,9 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
-	const [SortItems]					= useMutation(mutations.SORT_ITEMS);
+	const [SortItems]				= useMutation(mutations.SORT_ITEMS);
+	const[MoveTop] 					= useMutation(mutations.MOVE_TOP);
+
 
 	// console.log(hasUndo)
 
@@ -73,17 +77,21 @@ const Homescreen = (props) => {
 
 	const tpsUndo = async () => {
 		const retVal = await props.tps.undoTransaction();
+		setUndo(retVal[1]);
+		setRedo(retVal[2]);
+		console.log(hasUndo);
 		refetchTodos(refetch);
-		return retVal;
+		return retVal[0];
 	}
 
 
 	const tpsRedo = async () => {
 		const retVal = await props.tps.doTransaction();
-		props.setUndo();
-		console.log(retVal)
+		setUndo(retVal[1]);
+		setRedo(retVal[2]);
+		console.log(hasUndo);
 		refetchTodos(refetch);
-		return retVal;
+		return retVal[0];
 	}
 
 
@@ -156,8 +164,13 @@ const Homescreen = (props) => {
 			owner: props.user._id,
 			items: [],
 		}
-		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
+		const { data } = await AddTodolist({ variables: { todolist: list }});
 		list._id = data.addTodolist;
+		for(let i = 0; i< todolists.length; i++){
+			const {data} = await MoveTop({variables: {_id: todolists[i]._id}});
+		}
+		setUndo(false);
+		setRedo(false);
 		setActiveList(list);
 		refetch();
 		props.tps.clearAllTransactions();
@@ -177,13 +190,24 @@ const Homescreen = (props) => {
 
 	};
 
-	const handleSetActive = (id) => {
+	const handleSetActive = async (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
+		let objectId = todo._id;
+		for(let i = 0; i< todolists.length; i++){
+			if(todolists[i]._id !== objectId){
+				const {data} = await MoveTop({variables: {_id: todolists[i]._id}});
+			}
+		}
+		setUndo(false);
+		setRedo(false);
+		refetch();
 		setActiveList(todo);
 		props.tps.clearAllTransactions();
 	};
 
 	const clearActiveList = () => {
+		setUndo(false);
+		setRedo(false);
 		setActiveList({});
 		props.tps.clearAllTransactions();
 	}
@@ -232,6 +256,8 @@ const Homescreen = (props) => {
 		refetchTodos(refetch);
 	}
 
+
+
 	return (
 		<WLayout wLayout="header-lside">
 			<WLHeader>
@@ -275,8 +301,9 @@ const Homescreen = (props) => {
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={clearActiveList}
 									undo={tpsUndo} redo={tpsRedo}
-									sort = {sort} 
-									hasUndo = {props.hasUndo}
+									sort = {sort} 	
+									hasRedo = {hasRedo}
+									hasUndo = {hasUndo}							
 								/>
 							</div>
 						:

@@ -22,11 +22,14 @@ const App = () => {
 	const test2 = transactionStack.hasTransactionToRedo();
 	const [hasUndo, setUndo] = useState(test);
 	const [hasRedo, setRedo] = useState(test2);
-	const updateUndo = () => {
+	let updateUndo = () => {
+		console.log(transactionStack.hasTransactionToUndo())
 		setUndo(transactionStack.hasTransactionToUndo());
+		return hasUndo;
 	}
-	const updateRedo = () => {
+	let updateRedo = () => {
 		setRedo(transactionStack.hasTransactionToRedo());
+		return hasRedo;
 	}
 
 	return(
@@ -38,7 +41,8 @@ const App = () => {
 					name="home" 
 					render={() => 
 						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} hasUndo = {hasUndo}
-						setUndo = {updateUndo}/>
+						setUndo = {updateUndo}
+						hasRedo = {hasRedo} setRedo = {updateRedo}/>
 					} 
 				/>
 				<Route/>

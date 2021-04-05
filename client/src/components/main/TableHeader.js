@@ -6,8 +6,14 @@ const TableHeader = (props) => {
 
     const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
     const clickDisabled = () => { };
-    const hasUndo = props.hasUndo;
-    console.log("hello " + hasUndo)
+    let hasUndo = props.hasUndo;
+    let hasRedo = props.hasRedo;
+    let redoButtonStyle = ' table-header-button-tpsDisabled ';
+    let undoButtonStyle = ' table-header-button-tpsDisabled ';
+    if(!props.disabled){
+        redoButtonStyle = hasRedo ? 'table-header-button-tps ': ' table-header-button-tpsDisabled ';
+        undoButtonStyle = hasUndo ? 'table-header-button-tps ': ' table-header-button-tpsDisabled ';
+    }
 
     return (
         <WRow className="table-header">
@@ -30,10 +36,10 @@ const TableHeader = (props) => {
 
             <WCol size="2">
                 <div className="table-header-buttons">
-                    <WButton className="undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded" className={`${buttonStyle}`}>
+                    <WButton className="undo-redo" onClick={props.undo} wType="texted" clickAnimation={hasUndo? "ripple-light": ""} shape="rounded" className={`${undoButtonStyle}`}>
                             <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton className="undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded" className={`${buttonStyle}`}>
+                    <WButton className="undo-redo" onClick={props.redo} wType="texted" clickAnimation={hasRedo? "ripple-light": ""} shape="rounded" className={`${redoButtonStyle}`}>
                             <i className="material-icons">redo</i>
                     </WButton>
                     <WButton onClick={props.disabled ? clickDisabled : props.addItem} wType="texted" className={`${buttonStyle}`}>

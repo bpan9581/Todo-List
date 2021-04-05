@@ -66,16 +66,11 @@ module.exports = {
 				owner: owner,
 				items: items
 			});
-			console.log(newList);
 			const updated = await newList.save();
 			// const updated = await newList.save();
 			if(updated) return objectId;
 			else return ('Could not add todolist');
 		},
-
-		// moveTop: async(_, args) => {
-		// 	const {todolists, index} = args;
-		// },
 
 		/** 
 		 	@param 	 {object} args - a todolist objectID and item objectID
@@ -217,6 +212,23 @@ module.exports = {
 			// return old ordering if reorder was unsuccessful
 			listItems = found.items;
 			return (found.items);
-		}
+		},
+		moveTop: async(_, args) => {
+			const {_id} = args;
+			const listId = new ObjectId(_id);
+			const found = await Todolist.findOne({_id: listId});
+			const newList = new Todolist({
+				_id: listId,
+				id: found.id,
+				name: found.name,
+				owner: found.owner,
+				items: found.items
+			});
+			const deleted = await Todolist.deleteOne({_id: listId});
+			const updated = await newList.save();
+			if(updated) return "hello";
+			else return "";
+		},
+
 	}
 }

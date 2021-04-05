@@ -63,6 +63,7 @@ html, body {
 
 .list-item-active {
     background-color: var(--deep-blue);
+    color: var(--yellow-orange);
 }
 
 .list-item {
@@ -97,6 +98,10 @@ html, body {
     color: $text-color;
 }
 
+.sidebar-buttons-disabled {
+    color: var(--warm-black);
+}
+
 .table-entries {
     scrollbar-width: thin;
 }
@@ -126,6 +131,14 @@ html, body {
 .table-header-button {
     transition: 0.1s ease-in-out;
     color: var(--light-gray);
+}
+
+.table-header-button-tps{
+    color: var(--light-gray);
+}
+
+.table-header-button-tpsDisabled{
+    color: var(--warm-black);
 }
 
 .table-header-button-disabled {
