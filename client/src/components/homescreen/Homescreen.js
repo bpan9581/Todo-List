@@ -14,7 +14,8 @@ import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
 import { UpdateListField_Transaction, 
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
-	EditItem_Transaction } 				from '../../utils/jsTPS';
+	EditItem_Transaction,
+	SortItems_Transaction } 				from '../../utils/jsTPS';
 import WInput from 'wt-frontend/build/components/winput/WInput';
 import { set } from 'mongoose';
 
@@ -26,6 +27,7 @@ const Homescreen = (props) => {
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	// const [hasUndo, setUndo] 				= useState(props.tps.hasTransactionToUndo);
 
 	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS);
 	const [UpdateTodoItemField] 	= useMutation(mutations.UPDATE_ITEM_FIELD);
@@ -34,8 +36,13 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
-	const [MoveTop]					= useMutation(mutations.MOVE_TOP);
+	const [SortItems]					= useMutation(mutations.SORT_ITEMS);
 
+	// console.log(hasUndo)
+
+	// const move = async (index) =>{
+	// 	const{data} = await SortI({ variables: { todolists: todolists, index: index }, refetchQueries: [{ query: GET_DB_TODOS }] });
+	// }
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
 	if(loading) { console.log(loading, 'loading'); }
@@ -44,10 +51,9 @@ const Homescreen = (props) => {
 		todolists = data.getAllTodos; 
 		let newTodo = todolists.indexOf(activeList);
 		if(newTodo !== -1){
-			// todolists = await moveTop({ variables: { todolists: todolists, index: newTodo }, refetchQueries: [{ query: GET_DB_TODOS }] });
+			// move(newTodo)
 		}
 	}
-	
 
 	const auth = props.user === null ? false : true;
 
@@ -71,8 +77,11 @@ const Homescreen = (props) => {
 		return retVal;
 	}
 
+
 	const tpsRedo = async () => {
 		const retVal = await props.tps.doTransaction();
+		props.setUndo();
+		console.log(retVal)
 		refetchTodos(refetch);
 		return retVal;
 	}
@@ -84,7 +93,7 @@ const Homescreen = (props) => {
 	const addItem = async () => {
 		let list = activeList;
 		const items = list.items;
-		const lastID = items.length >= 1 ? items[items.length - 1].id + 1 : 0;
+		const lastID = items.length * Math.floor(Math.random() * 1000) + 1;
 		const newItem = {
 			_id: '',
 			id: lastID,
@@ -151,6 +160,7 @@ const Homescreen = (props) => {
 		list._id = data.addTodolist;
 		setActiveList(list);
 		refetch();
+		props.tps.clearAllTransactions();
 	};
 
 
@@ -203,6 +213,25 @@ const Homescreen = (props) => {
 		props.tps.clearAllTransactions();
 	}
 
+	const sort = async (op) => {
+		let todolist = activeList.items;
+		let direction = 0;
+		for(let i = 0; i < todolist.length - 1; i++){
+			if(todolist[i][op] > todolist[i+1][op]){
+				direction = 1;
+				break;
+			}
+		}
+		const test = {
+			items: todolist
+		}
+		let transaction = new SortItems_Transaction(activeList._id, direction, op, SortItems, activeList);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+		// const { data } = await SortItems({ variables: { _id: activeList._id, direction: direction, op: op, items: test }});
+		refetchTodos(refetch);
+	}
+
 	return (
 		<WLayout wLayout="header-lside">
 			<WLHeader>
@@ -246,6 +275,8 @@ const Homescreen = (props) => {
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={clearActiveList}
 									undo={tpsUndo} redo={tpsRedo}
+									sort = {sort} 
+									hasUndo = {props.hasUndo}
 								/>
 							</div>
 						:

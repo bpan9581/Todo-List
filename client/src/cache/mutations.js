@@ -74,6 +74,19 @@ export const REORDER_ITEMS = gql`
 	}
 `;
 
+export const SORT_ITEMS = gql`
+	mutation SortItems($_id: String!, $direction: Int!, $op: String!) {
+		sortItems(_id: $_id direction: $direction, op: $op) {
+			_id
+			id
+			description
+			due_date
+			assigned_to
+			completed
+		}
+	}
+`;
+
 export const ADD_TODOLIST = gql`
 	mutation AddTodolist($todolist: TodoInput!) {
 		addTodolist(todolist: $todolist) 
@@ -93,7 +106,7 @@ export const UPDATE_TODOLIST_FIELD = gql`
 `;
 
 export const MOVE_TOP = gql`
-	mutation MoveTop($todolist: TodoInput!) {
-		moveTop(todolist: $todolist) 
+	mutation MoveTop($todolists: TodoInput!, $index: Int!) {
+		moveTop(todolists: $todolists, index: $index) 
 	}
 `;

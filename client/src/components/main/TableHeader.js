@@ -6,23 +6,25 @@ const TableHeader = (props) => {
 
     const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
     const clickDisabled = () => { };
+    const hasUndo = props.hasUndo;
+    console.log("hello " + hasUndo)
 
     return (
         <WRow className="table-header">
             <WCol size="3">
-                <WButton className='table-header-section' wType="texted" >Task</WButton>
+                <WButton className='table-header-section' wType="texted" onClick = {() => props.sort("description")}>Task</WButton>
             </WCol>
 
             <WCol size="3">
-                <WButton className='table-header-section' wType="texted">Due Date</WButton>
+                <WButton className='table-header-section' wType="texted"onClick = {() => props.sort("due_date")}>Due Date</WButton>
             </WCol>
 
             <WCol size="2">
-                <WButton className='table-header-section' wType="texted" >Status</WButton>
+                <WButton className='table-header-section' wType="texted" onClick = {() => props.sort("completed")}>Status</WButton>
             </WCol>
 
             <WCol size = "2">
-                <WButton className='table-header-section' wType = "texted">Assigned To</WButton>
+                <WButton className='table-header-section' wType = "texted" onClick = {() => props.sort("assigned_to")}>Assigned To</WButton>
             </WCol>
 
 

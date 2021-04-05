@@ -23,13 +23,14 @@ const typeDefs = gql `
 	}
 	extend type Mutation {
 		addItem(item: ItemInput!, _id: String!, index: Int!): String
-		moveTop(todolist: TodoInput!): String
+		moveTop(todolists: TodoInput!, index: Int!): String
 		addTodolist(todolist: TodoInput!): String
 		deleteItem(itemId: String!, _id: String!): [Item]		
 		deleteTodolist(_id: String!): Boolean
 		updateTodolistField(_id: String!, field: String!, value: String!): String
 		updateItemField(itemId: String!, _id: String!, field: String!, value: String!, flag: Int!): [Item]
 		reorderItems(itemId: String!, _id: String!, direction: Int!): [Item]
+		sortItems(_id: String!, direction: Int!, op: String!): [Item]
 	}
 	input FieldInput {
 		_id: String

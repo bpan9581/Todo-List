@@ -73,13 +73,9 @@ module.exports = {
 			else return ('Could not add todolist');
 		},
 
-		// sortTodolist: async (_, args) => {
-		// 	const(_id, opcode)
+		// moveTop: async(_, args) => {
+		// 	const {todolists, index} = args;
 		// },
-
-		moveTop: async(_, args) => {
-			const {todolists} = args;
-		},
 
 		/** 
 		 	@param 	 {object} args - a todolist objectID and item objectID
@@ -176,7 +172,51 @@ module.exports = {
 			listItems = found.items;
 			return (found.items);
 
-		}
+		},
 
+		sortItems: async (_, args) => {
+			const {_id, direction, op} = args;
+			const listId = new ObjectId(_id);
+			const found = await Todolist.findOne({_id: listId});
+			let listItems = found.items;
+			const prev = new Todolist({
+				_id: found._id,
+				id: found.id,
+				name: found.name,
+				owner: found.owner,
+				items: found.items
+			});
+			let prevItems = prev.items;
+			let temp = null;
+			if(direction === 1){
+				for(let i = 0; i < listItems.length; i++){
+					for(let j = i + 1; j < listItems.length; j++){
+						if (listItems[j][op] < listItems[i][op]){
+							temp = listItems[i];
+							listItems[i] = listItems[j];
+							listItems[j] = temp;
+						}
+					}
+				}
+			} else if(direction === 0){
+				for(let i = 0; i < listItems.length; i++){
+					for(let j = i + 1; j < listItems.length; j++){
+						if (listItems[j][op] > listItems[i][op]){
+							temp = listItems[i];
+							listItems[i] = listItems[j];
+							listItems[j] = temp;
+						}
+					}
+				}
+			} else if (direction === 2){
+				temp = listItems;
+				listItems = found.prev;
+			}
+			const updated = await Todolist.updateOne({_id: listId}, { items: listItems, prev: prevItems })
+			if(updated) return (listItems);
+			// return old ordering if reorder was unsuccessful
+			listItems = found.items;
+			return (found.items);
+		}
 	}
 }

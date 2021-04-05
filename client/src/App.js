@@ -1,9 +1,10 @@
-import React 			from 'react';
+import React, { useState } 			from 'react';
 import Homescreen 		from './components/homescreen/Homescreen';
 import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { set } from 'mongoose';
  
 const App = () => {
 	let user = null;
@@ -17,6 +18,16 @@ const App = () => {
 		let { getCurrentUser } = data;
 		if(getCurrentUser !== null) { user = getCurrentUser; }
     }
+	const test = transactionStack.hasTransactionToUndo();
+	const test2 = transactionStack.hasTransactionToRedo();
+	const [hasUndo, setUndo] = useState(test);
+	const [hasRedo, setRedo] = useState(test2);
+	const updateUndo = () => {
+		setUndo(transactionStack.hasTransactionToUndo());
+	}
+	const updateRedo = () => {
+		setRedo(transactionStack.hasTransactionToRedo());
+	}
 
 	return(
 		<BrowserRouter>
@@ -26,7 +37,8 @@ const App = () => {
 					path="/home" 
 					name="home" 
 					render={() => 
-						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} />
+						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} hasUndo = {hasUndo}
+						setUndo = {updateUndo}/>
 					} 
 				/>
 				<Route/>

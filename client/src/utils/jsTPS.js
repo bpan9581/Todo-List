@@ -81,6 +81,29 @@ export class EditItem_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class SortItems_Transaction extends jsTPS_Transaction{
+    constructor(listID, direction, op, callback, todolist){
+        super();
+        this.listID = listID;
+        this. direction = direction;
+        this.op = op;
+        this.callback = callback;
+        this.rev = 2;
+        this.todolist = todolist;
+    }
+
+    async doTransaction(){
+        const {data} = await this.callback({variables: {_id: this.listID, direction: this.direction, op: this.op, todolist: this.todolist}})
+        console.log(data)
+        return data
+    }
+
+    async undoTransaction(){
+        const {data} = await this.callback({variables: {_id: this.listID, direction: this.rev, op: this.op}})
+        return data
+    }
+}
+
 /*  Handles create/delete of list items */
 export class UpdateListItems_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 
