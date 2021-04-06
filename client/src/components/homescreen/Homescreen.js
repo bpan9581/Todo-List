@@ -79,7 +79,7 @@ const Homescreen = (props) => {
 		const retVal = await props.tps.undoTransaction();
 		setUndo(retVal[1]);
 		setRedo(retVal[2]);
-		console.log(hasUndo);
+		console.log(retVal[0]);
 		refetchTodos(refetch);
 		return retVal[0];
 	}
@@ -94,6 +94,18 @@ const Homescreen = (props) => {
 		return retVal[0];
 	}
 
+	const handleKeyDown = (event) => {
+        if (event.ctrlKey && event.key === 'z'){
+            if(hasUndo)tpsUndo();	
+		}		
+		if (event.ctrlKey && event.key === 'y'){
+			if(hasRedo) tpsRedo();
+		}		
+    }
+	useEffect(
+		() => {document.addEventListener('keydown', handleKeyDown);
+		return() => document.removeEventListener('keydown', handleKeyDown)}
+		)
 
 	// Creates a default item and passes it to the backend resolver.
 	// The return id is assigned to the item, and the item is appended
@@ -303,7 +315,7 @@ const Homescreen = (props) => {
 									undo={tpsUndo} redo={tpsRedo}
 									sort = {sort} 	
 									hasRedo = {hasRedo}
-									hasUndo = {hasUndo}							
+									hasUndo = {hasUndo}					
 								/>
 							</div>
 						:

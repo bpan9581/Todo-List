@@ -3,6 +3,8 @@ import { WButton, WRow, WCol }  from 'wt-frontend';
 
 const SidebarHeader = (props) => {
     const clickDisabled = () => { };
+
+
     return (
         <WRow className='sidebar-header'>
             <WCol size="9">

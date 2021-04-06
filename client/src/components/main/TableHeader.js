@@ -1,3 +1,4 @@
+import e from 'cors';
 import React from 'react';
 
 import { WButton, WRow, WCol } from 'wt-frontend';
@@ -10,6 +11,7 @@ const TableHeader = (props) => {
     let hasRedo = props.hasRedo;
     let redoButtonStyle = ' table-header-button-tpsDisabled ';
     let undoButtonStyle = ' table-header-button-tpsDisabled ';
+
     if(!props.disabled){
         redoButtonStyle = hasRedo ? 'table-header-button-tps ': ' table-header-button-tpsDisabled ';
         undoButtonStyle = hasUndo ? 'table-header-button-tps ': ' table-header-button-tpsDisabled ';
@@ -36,7 +38,8 @@ const TableHeader = (props) => {
 
             <WCol size="2">
                 <div className="table-header-buttons">
-                    <WButton className="undo-redo" onClick={props.undo} wType="texted" clickAnimation={hasUndo? "ripple-light": ""} shape="rounded" className={`${undoButtonStyle}`}>
+                    <WButton className="undo-redo" onClick={props.undo} wType="texted"
+                        clickAnimation={hasUndo? "ripple-light": ""} shape="rounded" className={`${undoButtonStyle}`}>
                             <i className="material-icons">undo</i>
                     </WButton>
                     <WButton className="undo-redo" onClick={props.redo} wType="texted" clickAnimation={hasRedo? "ripple-light": ""} shape="rounded" className={`${redoButtonStyle}`}>
