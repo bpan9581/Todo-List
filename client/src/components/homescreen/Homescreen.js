@@ -168,7 +168,7 @@ const Homescreen = (props) => {
 
 	const createNewList = async () => {
 		const length = todolists.length
-		const id = length >= 1 ? todolists[length - 1].id + Math.floor((Math.random() * 100) + 1) : 1;
+		const id = length >= 1 ? todolists[length - 1].id + Math.floor((Math.random() * 1000) + 1) : 1;
 		const list = {
 			_id: '',
 			id: id,
