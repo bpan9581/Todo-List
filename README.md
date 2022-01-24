@@ -1,8 +1,7 @@
-# CSE316-Spring21-HW3
-##### Authors: Justin Fagan and Charlie Monnone
+# Todo List
+##### Authors: Brian Pan
 ### Getting Started
 ##### Configuring .env
-NOTE: In a full production application, an environment file would not be stored in a git repository. This file contains information vital to the security of the application, and should not be publicly available. For the sake of ease/learning, this .env is included in the repository, but do not do this in general.
 
 The backend utilizes a .env file to store a few constants which are necessary for the application to function. Some of that information is already there, such as the port numbers for the front and backend servers, as well as the client URL. The refresh and access token secrets are random character sequences used to sign and verify JWTs used by the authentication system. These are essentially passwords that the JWT middleware uses to hash login info, to both save new users and to verify returning ones. Use a site like https://passwordsgenerator.net/, or just come up with a random string yourself for these values. There isn't a hard length requirement on the secret, but smaller keys are more easy to guess by malicious actors, so 32 characters(256 bits) are recommended.
 
